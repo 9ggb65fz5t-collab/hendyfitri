@@ -53,7 +53,7 @@ const evHTML=e=>`<div class="card"><h3>${e.title}</h3><a href="${calLink(e)}" ta
 
 <section><p>We are getting married</p><img class="pic" id="hero" alt=""><h1>Hendy &amp; Fitri</h1>
 <a id="heroDate" target="_blank" rel="noopener"><b><h3>Sunday, 06 December 2026</h3></b></a>
- <p>Dear ,</p><p>with joyful hearts we invite you to share the beginning of our forever.</p></section>
+ <p id="inv" style="font-style:italic;margin-bottom:28px"></p></section>
  
 <section><div class="card"><h3>“Two souls, but a single thought. Two hearts that beat as one.” – John Keats</h3></div>
  
@@ -80,7 +80,7 @@ const evHTML=e=>`<div class="card"><h3>${e.title}</h3><a href="${calLink(e)}" ta
 <p>With love,<br><b>Hendy &amp; Fitri</b></p></section>
 
 <script>
-$("#g1").textContent=guest;$("#rn").value=guest;$("#wn").value=guest;
+$("#g1").textContent=guest;$("#inv").textContent="Dear "+guest+", with joyful hearts we invite you to share the beginning of our forever.";$("#rn").value=guest;$("#wn").value=guest;
 $("#hero").src=CONFIG.HERO;$("#bk").textContent=CONFIG.BANK;$("#ad").textContent=CONFIG.ADDRESS;
 $("#heroDate").href=calLink(CONFIG.EVENTS.reception);
 $("#events").insertAdjacentHTML("beforeend",evHTML(CONFIG.EVENTS.matrimony)+evHTML(CONFIG.EVENTS.reception));
