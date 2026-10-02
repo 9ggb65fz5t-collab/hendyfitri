@@ -45,7 +45,7 @@ const CONFIG={
 const $=s=>document.querySelector(s);
 const guest=(new URLSearchParams(location.search).get("to")||"Dear Guest").trim();
 const calLink=e=>"https://calendar.google.com/calendar/render?action=TEMPLATE&ctz=Asia/Jakarta&text="+encodeURIComponent("Wedding of Hendy & Fitri – "+e.title)+"&dates="+e.start+"/"+e.end+"&location="+encodeURIComponent(e.place+", "+e.addr)+"&details="+encodeURIComponent("You are invited to the wedding of Hendy Chandra & Fitri Berliana. "+e.title+" at "+e.place+". Map: "+CONFIG.MAPS);
-const evHTML=e=>`<div class="card"><h2>${e.title}</h2><a href="${calLink(e)}" target="_blank" rel="noopener"><b>📅 ${e.day}<br>${e.time}</b></a><p><b>${e.place}</b><br>${e.addr}</p><a class="btn" href="${CONFIG.MAPS}" target="_blank" rel="noopener">📍 Open Map</a></div>`;
+const evHTML=e=>`<div class="card"><h3>${e.title}</h3><a href="${calLink(e)}" target="_blank" rel="noopener"><b>📅 ${e.day}<br>${e.time}</b></a><p><b>${e.place}</b><br>${e.addr}</p><a class="btn" href="${CONFIG.MAPS}" target="_blank" rel="noopener">📍 Open Map</a></div>`;
 </script>
 
 <div id="cover"><p>The Wedding of</p><h1>Hendy &amp; Fitri</h1><p>Dear</p><h2 id="g1"></h2><button id="open">Open Invitation</button></div>
