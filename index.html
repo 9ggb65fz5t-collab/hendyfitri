@@ -53,9 +53,8 @@ const evHTML=e=>`<div class="card"><h3>${e.title}</h3><a href="${calLink(e)}" ta
 
 <section><p>We are getting married</p><img class="pic" id="hero" alt=""><h1>Hendy &amp; Fitri</h1>
 <a id="heroDate" target="_blank" rel="noopener"><b><h3>Sunday, 06 December 2026</h3></b></a>
- <p id="inv" style="font-style:italic;margin-bottom:28px"></p></section>
- 
-<section><div class="card"><h3>“Two souls, but a single thought. Two hearts that beat as one.” – John Keats</h3></div>
+ <p id="inv" style="font-style:italic;margin-bottom:28px"></p>
+ <div class="card"><h3>“Two souls, but a single thought. Two hearts that beat as one.” – John Keats</h3></div></section>
  
 <section><h2>The Groom &amp; Bride</h2>
 <div class="card"><img class="pic" img src="images/gallery-5.png" alt=""><h2>Hendy Chandra</h2>third son of<br>Mr. Sugianto &amp; Mrs. Yanti</div>
@@ -111,4 +110,9 @@ const load=()=>fetch(CONFIG.SCRIPT_URL).then(r=>r.json()).then(render).catch(()=
 $("#wf").onsubmit=async e=>{e.preventDefault();const t=$("#wt").value.trim();if(!t)return;
  if(await send({type:"wish",name:guest,wish:t},$("#wm"),e.target.querySelector("button"))){$("#wt").value="";setTimeout(load,2000)}};
 if(!CONFIG.SCRIPT_URL.startsWith("PASTE"))load();
+ // falling petals (change PETALS to add/remove)
+const PETALS=16,cols=["#f9c9d6","#f3a9bf","#fbdde5","#bcd8f0"];
+for(let i=0;i<PETALS;i++){const p=document.createElement("i"),s=10+Math.random()*10;p.className="petal";
+ p.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s}px;background:${cols[i%4]};animation-duration:${9+Math.random()*8}s;animation-delay:-${Math.random()*14}s;--dx:${(Math.random()-.5)*160}px`;
+ document.body.append(p)}
 </script></body></html>
