@@ -34,7 +34,7 @@ const CONFIG={
  HERO:"images/hero.png",
  GALLERY:["images/gallery-1.png","images/2.jpg","images/3.jpg","images/4.jpg","images/gallery-5.png","images/6.jpg"],
  MAPS:"https://maps.app.goo.gl/VKZjCyA94EGozEgQA",
- BANK:"XXX", ADDRESS:"XXX",
+ BANK:"XXX", ADDRESS:"Jl. Tempoa II No. 03. RT.015, Kel. Cempaka Putih, Kec. Jelutung, Kota Jambi",
  EVENTS:{
   matrimony:{title:"Holy Matrimony",day:"Sunday, 06 December 2026",time:"07:00 – Ends",place:"Vihara Sakyakirti Jambi",addr:"Jl. Pangeran Diponegoro No. 56, Kel. Sulanjana, Kota Jambi",start:"20261206T070000",end:"20261206T110000"},
   reception:{title:"Wedding Reception",day:"Sunday, 06 December 2026",time:"18:00 – Ends",place:"De Suite Hotel (Emerald Ballroom)",addr:"Jl. Halim Perdana Kusuma No 8-11, Kel. Sungai Asam, Kec. Pasar Jambi, Kota Jambi",start:"20261206T180000",end:"20261206T220000"}
@@ -50,11 +50,12 @@ const evHTML=e=>`<div class="card"><h2>${e.title}</h2><a href="${calLink(e)}" ta
 <button id="music" aria-label="Music">♪</button><audio id="aud" loop></audio>
 
 <section><p>We are getting married</p><img class="pic" id="hero" alt=""><h1>Hendy &amp; Fitri</h1>
-<a id="heroDate" target="_blank" rel="noopener"><b>Sunday, 06 December 2026 · Save the Date 📅</b></a></section>
+<a id="heroDate" target="_blank" rel="noopener"><b>Sunday, 06 December 2026</b></a></section>
 
-<section><h2>Bride &amp; Groom</h2>
+<section><h2>Groom &amp; Bride</h2>
+<div class="card"><h2>Hendy Chandra</h2>third son of<br>Mr. Sugianto &amp; Mrs. Yanti</div>
 <div class="card"><h2>Fitri Berliana, S.Tr.Par</h2>youngest daughter of<br>Mr. Winardi Lie &amp; Mrs. Minati</div>
-<div class="card"><h2>Hendy Chandra</h2>third son of<br>Mr. Sugianto &amp; Mrs. Yanti</div></section>
+</section>
 
 <section id="events"><h2>Save The Date</h2><div class="cd" id="cd"></div></section>
 <section><h2>Gallery</h2><div class="grid" id="gal"></div></section>
