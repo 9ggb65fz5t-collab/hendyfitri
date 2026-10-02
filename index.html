@@ -28,13 +28,16 @@ fieldset{border:0;padding:0;margin:14px 0}label{margin:0 12px}
 .petal{position:fixed;top:-30px;z-index:5;pointer-events:none;border-radius:150% 0 150% 0;opacity:.75;animation:fall linear infinite}
 @keyframes fall{to{transform:translate3d(var(--dx),112vh,0) rotate(540deg)}}
 @media(prefers-reduced-motion:reduce){.petal{display:none}}
+#bg{position:fixed;left:0;right:0;top:-10vh;height:120vh;z-index:-1;pointer-events:none;opacity:.5;background:center/cover no-repeat;will-change:transform}
 </style></head><body>
+ <div id="bg"></div>
 <script>
 /* ===== EDIT HERE ===== */
 const CONFIG={
  SCRIPT_URL:"PASTE_APPS_SCRIPT_WEB_APP_URL_HERE",
  MUSIC:"assets/music.mp3",
  HERO:"images/hero.png",
+ BG:"images/bg.jpg",
  BRIDE:"images/gallery-1.png",
  GROOM:"images/gallery-5.png",
  GALLERY:["images/gallery-1.png","images/gallery-2.png","images/gallery-3.png","images/gallery-4.png","images/gallery-5.png","images/gallery-6.png"],
@@ -113,6 +116,11 @@ const load=()=>fetch(CONFIG.SCRIPT_URL).then(r=>r.json()).then(render).catch(()=
 $("#wf").onsubmit=async e=>{e.preventDefault();const t=$("#wt").value.trim();if(!t)return;
  if(await send({type:"wish",name:guest,wish:t},$("#wm"),e.target.querySelector("button"))){$("#wt").value="";setTimeout(load,2000)}};
 if(!CONFIG.SCRIPT_URL.startsWith("PASTE"))load();
+// parallax background (image at 50% opacity, set in #bg CSS)
+const bg=$("#bg");bg.style.backgroundImage=`url(${CONFIG.BG})`;let tick=0;
+const par=()=>{tick=0;const h=document.documentElement,m=Math.max(1,h.scrollHeight-innerHeight),p=scrollY/m;
+ bg.style.transform=`translate3d(0,${(0.5-p)*0.2*innerHeight}px,0)`};
+addEventListener("scroll",()=>{tick||(tick=requestAnimationFrame(par))},{passive:true});par();
  // falling petals (change PETALS to add/remove)
 const PETALS=16,cols=["#f9c9d6","#f3a9bf","#fbdde5","#bcd8f0"];
 for(let i=0;i<PETALS;i++){const p=document.createElement("i"),s=10+Math.random()*10;p.className="petal";
