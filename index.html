@@ -29,8 +29,10 @@ fieldset{border:0;padding:0;margin:14px 0}label{margin:0 12px}
 @keyframes fall{to{transform:translate3d(var(--dx),112vh,0) rotate(540deg)}}
 @media(prefers-reduced-motion:reduce){.petal{display:none}}
 #bg{position:fixed;left:0;right:0;top:-10vh;height:120vh;z-index:-1;pointer-events:none;opacity:.5;background:center/cover no-repeat;will-change:transform}
+#lb{position:fixed;inset:0;z-index:60;background:rgba(40,30,45,.92);display:none;align-items:center;justify-content:center}#lb.on{display:flex}#lb img{max-width:94vw;max-height:84vh;border-radius:12px;object-fit:contain}#lb button{position:absolute;top:50%;width:44px;height:44px;margin:-22px 0 0;padding:0;border-radius:50%;font-size:1.6rem;background:#fff3;color:#fff}
+.big{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;background:var(--blue);cursor:zoom-in}.th{position:relative;display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}.th::-webkit-scrollbar{display:none}.th img{width:64px;height:64px;flex:none;object-fit:cover;border-radius:12px;background:var(--blue);opacity:.55;cursor:pointer;transition:.3s}.th .on{opacity:1;outline:2px solid var(--rose)}
 </style></head><body>
- <div id="bg"></div>
+<div id="bg"></div>
 <script>
 /* ===== EDIT HERE ===== */
 const CONFIG={
@@ -40,7 +42,9 @@ const CONFIG={
  BG:"images/bg.png",
  BRIDE:"images/gallery-1.png",
  GROOM:"images/gallery-5.png",
- GALLERY:["images/gallery-1.png","images/gallery-2.png","images/gallery-3.png","images/gallery-4.png","images/gallery-5.png","images/gallery-6.png"],
+ GALLERY:["images/gallery-1.png","images/gallery-2.png","images/gallery-3.png","images/gallery-4.png",
+          "images/gallery-5.png","images/gallery-6.png","images/gallery-7.png","images/gallery-8.png",
+          "images/gallery-9.png","images/gallery-10.png"],
  MAPS:"https://maps.app.goo.gl/VKZjCyA94EGozEgQA",
  BANK:"XXX", ADDRESS:"Jl. Tempoa II No. 03. RT.015, Kel. Cempaka Putih, Kec. Jelutung, Kota Jambi",
  EVENTS:{
