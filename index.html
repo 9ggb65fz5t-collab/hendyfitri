@@ -50,15 +50,15 @@ const CONFIG={
           "images/gallery-7.png","images/gallery-8.png","images/gallery-9.png","images/gallery-10.png",
           "images/gallery-11.png","images/gallery-12.png"],
  BANK:"XXX", ADDRESS:"Jl. Tempoa II No. 03. RT.015, Kel. Cempaka Putih, Kec. Jelutung, Kota Jambi",
- EVENTS:{
+  EVENTS:{
   matrimony:{title:"Holy Matrimony",day:"Sunday, 06 December 2026",time:"07:00 – Ends",place:"Vihara Sakyakirti Jambi",map:"https://maps.app.goo.gl/JhqyBBkfE1c5MKbD7",map:"https://maps.app.goo.gl/QToct26tfms3zQD5d",addr:"Jl. Pangeran Diponegoro No. 56, Kel. Sulanjana, Kota Jambi",start:"20261206T070000",end:"20261206T110000"},
   reception:{title:"Wedding Reception",day:"Sunday, 06 December 2026",time:"18:00 – Ends",place:"De Suite Hotel (Emerald Ballroom)",map:"https://maps.app.goo.gl/VKZjCyA94EGozEgQA",map:"https://maps.app.goo.gl/VKZjCyA94EGozEgQA",addr:"Jl. Halim Perdana Kusuma No 8-11, Kel. Sungai Asam, Kec. Pasar Jambi, Kota Jambi",start:"20261206T180000",end:"20261206T220000"}
  }
 };
 const $=s=>document.querySelector(s);
-const guest=(new URLSearchParams(location.search).get("to")||"Dear Guest").trim();
-const calLink=e=>"https://calendar.google.com/calendar/render?action=TEMPLATE&ctz=Asia/Jakarta&text="+encodeURIComponent("Wedding of Hendy & Fitri – "+e.title)+"&dates="+e.start+"/"+e.end+"&location="+encodeURIComponent(e.place+", "+e.addr)+"&details="+encodeURIComponent("You are invited to the wedding of Hendy Chandra & Fitri Berliana. "+e.title+" at "+e.place+". Map: "+CONFIG.MAPS);
-const evHTML=e=>`<div class="card"><h3>${e.title}</h3><a href="${calLink(e)}" target="_blank" rel="noopener"><b> ${e.day}<br>${e.time}</b></a><p><b>${e.place}</b><br>${e.addr}</p><a class="btn" href="${CONFIG.MAPS}" target="_blank" rel="noopener"> Open Map</a></div>`;
+const guest=(new URLSearchParams(location.search).get("to")||"Guest").trim();
+const calLink=e=>"https://calendar.google.com/calendar/render?action=TEMPLATE&ctz=Asia/Jakarta&text="+encodeURIComponent("Wedding of Hendy & Fitri – "+e.title)+"&dates="+e.start+"/"+e.end+"&location="+encodeURIComponent(e.place+", "+e.addr)+"&details="+encodeURIComponent("You are invited to the wedding of Hendy Chandra & Fitri Berliana. "+e.title+" at "+e.place+". Map: "+e.map);
+const evHTML=e=>`<div class="card"><h2>${e.title}</h2><a href="${calLink(e)}" target="_blank" rel="noopener"><b> ${e.day}<br>${e.time}</b></a><p><b>${e.place}</b><br>${e.addr}</p><a class="btn" href="${e.map}" target="_blank" rel="noopener"> Open Map</a></div>`;
 </script>
 
 <div id="cover"><div class="cbg"></div><p>The Wedding of</p><h1>Hendy </h1><h1>&amp;</h1><h1>Fitri</h1></h1><p>Dear</p><h2 id="g1"></h2><button id="open">Open Invitation</button></div>
