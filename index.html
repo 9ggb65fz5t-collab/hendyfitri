@@ -161,3 +161,15 @@ let vis=false;new IntersectionObserver(e=>vis=e[0].isIntersecting,{threshold:.3}
 setInterval(()=>story.classList.toggle("paused",!vis||lb.classList.contains("on")),200);
 sel(0);
  
+// parallax background (image at 50% opacity, set in #bg CSS)
+const bg=$("#bg");bg.style.backgroundImage=`url(${CONFIG.BG})`;$(".cbg").style.backgroundImage=`url(${CONFIG.COVER_BG}),url(${CONFIG.BG})`;let tick=0;
+const par=()=>{tick=0;const h=document.documentElement,m=Math.max(1,h.scrollHeight-innerHeight),p=scrollY/m;
+ bg.style.transform=`translate3d(0,${(0.5-p)*0.2*innerHeight}px,0)`};
+addEventListener("scroll",()=>{tick||(tick=requestAnimationFrame(par))},{passive:true});par();
+// falling petals (change PETALS to add/remove)
+const PETALS=16,cols=["#f9c9d6","#f3a9bf","#fbdde5","#bcd8f0"];
+for(let i=0;i<PETALS;i++){const p=document.createElement("i"),s=10+Math.random()*10;p.className="petal";
+ p.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s}px;background:${cols[i%4]};animation-duration:${9+Math.random()*8}s;animation-delay:-${Math.random()*14}s;--dx:${(Math.random()-.5)*160}px`;
+ document.body.append(p)}
+</script></body></html>
+ 
