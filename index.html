@@ -30,7 +30,7 @@ fieldset{border:0;padding:0;margin:14px 0}label{margin:0 12px}
 @media(prefers-reduced-motion:reduce){.petal{display:none}}
 #bg{position:fixed;left:0;right:0;top:-10vh;height:120vh;z-index:-1;pointer-events:none;opacity:.5;background:center/cover no-repeat;will-change:transform}
 #lb{position:fixed;inset:0;z-index:60;background:rgba(40,30,45,.92);display:none;align-items:center;justify-content:center}#lb.on{display:flex}#lb img{max-width:94vw;max-height:84vh;border-radius:12px;object-fit:contain}#lb button{position:absolute;top:50%;width:44px;height:44px;margin:-22px 0 0;padding:0;border-radius:50%;font-size:1.6rem;background:#fff3;color:#fff}
-.big{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;background:var(--blue);cursor:zoom-in}.th{position:relative;display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}.th::-webkit-scrollbar{display:none}.th img{width:64px;height:64px;flex:none;object-fit:cover;border-radius:12px;background:var(--blue);opacity:.55;cursor:pointer;transition:.3s}.th .on{opacity:1;outline:2px solid var(--rose)}
+.big{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;background:var(--blue);cursor:zoom-in}.th{position:relative;display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--rose) transparent;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;cursor:grab;scroll-snap-type:x proximity}.th::-webkit-scrollbar{height:4px}.th::-webkit-scrollbar-thumb{background:var(--rose);border-radius:4px}.th img{scroll-snap-align:center;-webkit-user-drag:none;user-select:none}.th img{width:64px;height:64px;flex:none;object-fit:cover;border-radius:12px;background:var(--blue);opacity:.55;cursor:pointer;transition:.3s}.th .on{opacity:1;outline:2px solid var(--rose)}
 </style></head><body>
 <div id="bg"></div>
 <script>
@@ -132,7 +132,11 @@ let cur=0;const th=$("#th");
 th.innerHTML=CONFIG.GALLERY.map(s=>`<img src="${s}" loading="lazy" alt="">`).join("");
 const sel=(i,scroll)=>{cur=i;$("#big").src=CONFIG.GALLERY[i];[...th.children].forEach((x,j)=>x.classList.toggle("on",j==i));
  if(scroll){const x=th.children[i];th.scrollTo({left:x.offsetLeft-th.clientWidth/2+x.clientWidth/2,behavior:"smooth"})}};
-th.onclick=e=>{const i=[...th.children].indexOf(e.target);if(i>=0)sel(i,1)};
+let dn=0,mv=0,sx=0,sl=0;th.ondragstart=e=>e.preventDefault();
+th.onpointerdown=e=>{if(e.pointerType=="mouse"){dn=1;mv=0;sx=e.clientX;sl=th.scrollLeft}};
+addEventListener("pointermove",e=>{if(dn){const d=e.clientX-sx;if(Math.abs(d)>4)mv=1;th.scrollLeft=sl-d}});
+addEventListener("pointerup",()=>dn=0);
+th.onclick=e=>{if(mv){mv=0;return}const i=[...th.children].indexOf(e.target);if(i>=0)sel(i,1)};
 $("#big").onclick=()=>openLB(CONFIG.GALLERY,cur);sel(0);
 // parallax background (image at 50% opacity, set in #bg CSS)
 const bg=$("#bg");bg.style.backgroundImage=`url(${CONFIG.BG})`;let tick=0;
@@ -145,3 +149,4 @@ for(let i=0;i<PETALS;i++){const p=document.createElement("i"),s=10+Math.random()
  p.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s}px;background:${cols[i%4]};animation-duration:${9+Math.random()*8}s;animation-delay:-${Math.random()*14}s;--dx:${(Math.random()-.5)*160}px`;
  document.body.append(p)}
 </script></body></html>
+ 
