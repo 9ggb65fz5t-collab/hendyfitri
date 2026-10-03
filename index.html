@@ -34,6 +34,9 @@ fieldset{border:0;padding:0;margin:14px 0}label{margin:0 12px}
 .cbg{position:absolute;inset:0;opacity:.5;background:center/cover no-repeat;pointer-events:none}#cover>:not(.cbg){position:relative}
 .pg{margin-top:12px}.pg button{padding:6px 16px;margin:0 8px}.pg button:disabled{opacity:.4;cursor:default}.wish div{white-space:pre-wrap;word-break:break-word}
 footer{padding:8px 22px calc(40px + env(safe-area-inset-bottom,0px));font-size:.8rem;letter-spacing:.06em;opacity:.7}
+.story{position:relative;border-radius:20px;overflow:hidden;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}.story .big{display:block;cursor:pointer}
+.story:before{content:"";position:absolute;inset:0 0 auto;height:56px;background:linear-gradient(rgba(0,0,0,.28),transparent);z-index:1;pointer-events:none}
+.bars{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:3px;z-index:2;pointer-events:none}.bars i{flex:1;height:3px;background:rgba(255,255,255,.45);border-radius:3px;overflow:hidden}.bars b{display:block;height:100%;width:0;background:#fff}.bars .done b{width:100%}.bars .cur b{animation:fill 4s linear forwards}@keyframes fill{to{width:100%}}.story.paused .cur b{animation-play-state:paused}
 </style></head><body>
 <div id="bg"></div>
 <script>
@@ -75,7 +78,7 @@ const evHTML=e=>`<div class="card"><h2>${e.title}</h2><a href="${calLink(e)}" ta
 </section>
 
 <section id="events"><h2>Save The Date</h2><div class="cd" id="cd"></div></section>
-<section><h2>Gallery</h2><img class="big" id="big" alt=""><div class="th" id="th"></div></section>
+<section><h2>Gallery</h2><div class="story paused" id="story"><div class="bars" id="bars"></div><img class="big" id="big" alt=""></div><div class="th" id="th"></div></section>
 
 <section><h2>RSVP</h2><form class="card" id="rsvp">
 <input type="text" id="rn" disabled>
@@ -140,29 +143,21 @@ lb.addEventListener("touchstart",e=>x0=e.touches[0].clientX,{passive:true});
 lb.addEventListener("touchend",e=>{const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>50)show(ix+(d<0?1:-1))});
 document.addEventListener("keydown",e=>{if(!lb.classList.contains("on"))return;if(e.key=="Escape")lb.classList.remove("on");if(e.key=="ArrowRight")show(ix+1);if(e.key=="ArrowLeft")show(ix-1)});
 let cur=0;const th=$("#th");
+const bars=$("#bars"),story=$("#story");bars.innerHTML=CONFIG.GALLERY.map(()=>"<i><b></b></i>").join("");
+const setBars=i=>[...bars.children].forEach((b,j)=>{b.className="";if(j<i)b.className="done";if(j==i){void b.offsetWidth;b.className="cur"}});
 th.innerHTML=CONFIG.GALLERY.map(s=>`<img src="${s}" loading="lazy" alt="">`).join("");
-const sel=(i,scroll)=>{cur=i;const bg_=$("#big");bg_.style.opacity=0;setTimeout(()=>{bg_.src=CONFIG.GALLERY[i];bg_.style.opacity=1},250);[...th.children].forEach((x,j)=>x.classList.toggle("on",j==i));
+const sel=(i,scroll)=>{cur=i;setBars(i);const bg_=$("#big");bg_.style.opacity=0;setTimeout(()=>{bg_.src=CONFIG.GALLERY[i];bg_.style.opacity=1},250);[...th.children].forEach((x,j)=>x.classList.toggle("on",j==i));
  if(scroll){const x=th.children[i];th.scrollTo({left:x.offsetLeft-th.clientWidth/2+x.clientWidth/2,behavior:"smooth"})}};
 let dn=0,mv=0,sx=0,sl=0;th.ondragstart=e=>e.preventDefault();
 th.onpointerdown=e=>{if(e.pointerType=="mouse"){dn=1;mv=0;sx=e.clientX;sl=th.scrollLeft}};
 addEventListener("pointermove",e=>{if(dn){const d=e.clientX-sx;if(Math.abs(d)>4)mv=1;th.scrollLeft=sl-d}});
 addEventListener("pointerup",()=>dn=0);
 th.onclick=e=>{if(mv){mv=0;return}const i=[...th.children].indexOf(e.target);if(i>=0)sel(i,1)};
-$("#big").onclick=()=>openLB(CONFIG.GALLERY,cur);sel(0);
-// autoplay loop: next photo every AUTO ms while gallery is on screen and lightbox closed
-const AUTO=4000;let timer,vis=false;
-const play=()=>{clearInterval(timer);timer=setInterval(()=>{if(vis&&!lb.classList.contains("on"))sel((cur+1)%CONFIG.GALLERY.length,1)},AUTO)};
-new IntersectionObserver(e=>vis=e[0].isIntersecting,{threshold:.3}).observe($("#big"));
-th.addEventListener("click",play);play();
-// parallax background (image at 50% opacity, set in #bg CSS)
-const bg=$("#bg");bg.style.backgroundImage=`url(${CONFIG.BG})`;$(".cbg").style.backgroundImage=`url(${CONFIG.COVER_BG}),url(${CONFIG.BG})`;let tick=0;
-const par=()=>{tick=0;const h=document.documentElement,m=Math.max(1,h.scrollHeight-innerHeight),p=scrollY/m;
- bg.style.transform=`translate3d(0,${(0.5-p)*0.2*innerHeight}px,0)`};
-addEventListener("scroll",()=>{tick||(tick=requestAnimationFrame(par))},{passive:true});par();
-// falling petals (change PETALS to add/remove)
-const PETALS=16,cols=["#f9c9d6","#f3a9bf","#fbdde5","#bcd8f0"];
-for(let i=0;i<PETALS;i++){const p=document.createElement("i"),s=10+Math.random()*10;p.className="petal";
- p.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s}px;background:${cols[i%4]};animation-duration:${9+Math.random()*8}s;animation-delay:-${Math.random()*14}s;--dx:${(Math.random()-.5)*160}px`;
- document.body.append(p)}
-</script></body></html>
+// story-style: tap left edge = back, right edge = forward, middle = enlarge. Each bar fills in 4s (change "4s" in CSS .bars .cur b), then moves on and loops.
+const N=CONFIG.GALLERY.length;
+story.onclick=e=>{const r=story.getBoundingClientRect(),x=(e.clientX-r.left)/r.width;x<.3?sel((cur-1+N)%N,1):x>.7?sel((cur+1)%N,1):openLB(CONFIG.GALLERY,cur)};
+bars.addEventListener("animationend",e=>{if(e.target.parentNode.classList.contains("cur"))sel((cur+1)%N,1)});
+let vis=false;new IntersectionObserver(e=>vis=e[0].isIntersecting,{threshold:.3}).observe(story);
+setInterval(()=>story.classList.toggle("paused",!vis||lb.classList.contains("on")),200);
+sel(0);
  
