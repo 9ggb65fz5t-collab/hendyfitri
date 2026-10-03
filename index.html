@@ -52,7 +52,7 @@ const CONFIG={
  BANK:"XXX", ADDRESS:"Jl. Tempoa II No. 03. RT.015, Kel. Cempaka Putih, Kec. Jelutung, Kota Jambi",
  EVENTS:{
   matrimony:{title:"Holy Matrimony",day:"Sunday, 06 December 2026",time:"07:00 – Ends",place:"Vihara Sakyakirti Jambi",addr:"Jl. Pangeran Diponegoro No. 56, Kel. Sulanjana, Kota Jambi",start:"20261206T070000",end:"20261206T110000"},
-  reception:{title:"Wedding Reception",day:"Sunday, 06 December 2026",time:"18:00 – Ends",place:"De Suite Hotel (Emerald Ballroom)",addr:"Jl. Halim Perdana Kusuma No 8-11, Kel. Sungai Asam, Kec. Pasar Jambi, Kota Jambi",start:"20261206T180000",end:"20261206T220000"}
+  reception:{title:"Wedding Reception",day:"Sunday, 06 December 2026",time:"18:00 – Ends",place:"De Suite Hotel (Emerald Ballroom)",addr:"Jl. Halim dana Kusuma No 8-11, Kel. Sungai Asam, Kec. Pasar Jambi, Kota Jambi",start:"20261206T180000",end:"20261206T220000"}
  }
 };
 const $=s=>document.querySelector(s);
@@ -117,7 +117,7 @@ const send=async(data,msg,btn)=>{btn.disabled=true;msg.textContent="Sending…";
  msg.textContent="Thank you! 💌";return true}catch(e){msg.textContent="Failed, please try again.";return false}finally{btn.disabled=false}};
 $("#rsvp").onsubmit=async e=>{e.preventDefault();const f=e.target;
  await send({type:"rsvp",name:guest,attend:f.a.value,guests:f.n.value},$("#rm"),f.querySelector("button"))};
-let W=[],pg=1;const PER=10; // wishes per page
+let W=[],pg=1;const PER=8; // wishes per page
 const render=l=>{if(l)W=l;const n=Math.max(1,Math.ceil(W.length/PER));pg=Math.min(pg,n);const w=$("#wl");w.innerHTML="";
  if(!W.length)w.textContent="Be the first to send your wishes 💌";
  W.slice((pg-1)*PER,pg*PER).forEach(i=>{const d=document.createElement("div");d.className="wish";
