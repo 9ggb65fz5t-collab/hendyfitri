@@ -32,6 +32,7 @@ fieldset{border:0;padding:0;margin:14px 0}label{margin:0 12px}
 #lb{position:fixed;inset:0;z-index:60;background:rgba(40,30,45,.92);display:none;align-items:center;justify-content:center}#lb.on{display:flex}#lb img{max-width:94vw;max-height:84vh;border-radius:12px;object-fit:contain}#lb button{position:absolute;top:50%;width:44px;height:44px;margin:-22px 0 0;padding:0;border-radius:50%;font-size:1.6rem;background:#fff3;color:#fff}
 .big{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;background:var(--blue);cursor:zoom-in}.th{position:relative;display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--rose) transparent;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;cursor:grab;scroll-snap-type:x proximity}.th::-webkit-scrollbar{height:4px}.th::-webkit-scrollbar-thumb{background:var(--rose);border-radius:4px}.th img{scroll-snap-align:center;-webkit-user-drag:none;user-select:none}.th img{width:64px;height:64px;flex:none;object-fit:cover;border-radius:12px;background:var(--blue);opacity:.55;cursor:pointer;transition:.3s}.th .on{opacity:1;outline:2px solid var(--rose)}
 .cbg{position:absolute;inset:0;opacity:.5;background:center/cover no-repeat;pointer-events:none}#cover>:not(.cbg){position:relative}
+.pg{margin-top:12px}.pg button{padding:6px 16px;margin:0 8px}.pg button:disabled{opacity:.4;cursor:default}.wish div{white-space:pre-wrap;word-break:break-word}
 </style></head><body>
 <div id="bg"></div>
 <script>
@@ -84,13 +85,13 @@ const evHTML=e=>`<div class="card"><h3>${e.title}</h3><a href="${calLink(e)}" ta
 
 <section><h2>Wishes</h2><form class="card" id="wf">
 <input type="text" id="wn" disabled><br><br><textarea id="wt" rows="4" maxlength="500" placeholder="Your best wishes" required></textarea>
-<button>Send Wishes</button><p id="wm"></p></form><div id="wl"></div></section>
+<button>Send Wishes</button><p id="wm"></p></form><div class="card" id="wbox"><div id="wl"></div><div class="pg" id="pg"></div></div></section>
 
 <section><h2>Wanna give us some gifts?</h2><div class="card">
 <p>Bank account<br><b id="bk"></b></p><p>Gift delivery address<br><b id="ad"></b></p></div>
- <p>Thank You</p>
+ <p><h2>Thank You</h2></p>
  <p>Thank you for being part of our story and celebrating the start of our forever</p>
-<p>With love,<br><b>Hendy &amp; Fitri</b></p></section>
+With love,<br><b>Hendy &amp; Fitri</b></section>
 
 <script>
 $("#g1").textContent=guest;$("#inv").textContent="Dear "+guest+", with joyful hearts we invite you to share the beginning of our forever.";$("#rn").value=guest;$("#wn").value=guest;
@@ -116,11 +117,17 @@ const send=async(data,msg,btn)=>{btn.disabled=true;msg.textContent="Sending…";
  msg.textContent="Thank you! 💌";return true}catch(e){msg.textContent="Failed, please try again.";return false}finally{btn.disabled=false}};
 $("#rsvp").onsubmit=async e=>{e.preventDefault();const f=e.target;
  await send({type:"rsvp",name:guest,attend:f.a.value,guests:f.n.value},$("#rm"),f.querySelector("button"))};
-const render=l=>{const w=$("#wl");w.innerHTML="";l.forEach(i=>{const d=document.createElement("div");d.className="wish";
- const b=document.createElement("b");b.textContent=i.name;const p=document.createElement("div");p.textContent=i.wish;d.append(b,p);w.append(d)})};
+let W=[],pg=1;const PER=10; // wishes per page
+const render=l=>{if(l)W=l;const n=Math.max(1,Math.ceil(W.length/PER));pg=Math.min(pg,n);const w=$("#wl");w.innerHTML="";
+ if(!W.length)w.textContent="Be the first to send your wishes 💌";
+ W.slice((pg-1)*PER,pg*PER).forEach(i=>{const d=document.createElement("div");d.className="wish";
+ const b=document.createElement("b");b.textContent=i.name;const p=document.createElement("div");p.textContent=i.wish;d.append(b,p);w.append(d)});
+ $("#pg").innerHTML=n>1?`<button id="pp" ${pg<2?"disabled":""}>‹ Prev</button> ${pg} / ${n} <button id="pn" ${pg>=n?"disabled":""}>Next ›</button>`:"";
+ if(n>1){$("#pp").onclick=()=>{pg--;render()};$("#pn").onclick=()=>{pg++;render()}}};
+render([]);
 const load=()=>fetch(CONFIG.SCRIPT_URL).then(r=>r.json()).then(render).catch(()=>{});
 $("#wf").onsubmit=async e=>{e.preventDefault();const t=$("#wt").value.trim();if(!t)return;
- if(await send({type:"wish",name:guest,wish:t},$("#wm"),e.target.querySelector("button"))){$("#wt").value="";setTimeout(load,2000)}};
+ if(await send({type:"wish",name:guest,wish:t},$("#wm"),e.target.querySelector("button"))){$("#wt").value="";pg=1;setTimeout(load,2000)}};
 if(!CONFIG.SCRIPT_URL.startsWith("PASTE"))load();
 const lb=document.createElement("div");lb.id="lb";
 lb.innerHTML='<img alt=""><button data-d="-1" style="left:8px">‹</button><button data-d="1" style="right:8px">›</button><button style="top:calc(34px + env(safe-area-inset-top,0px));right:14px">✕</button>';
