@@ -25,12 +25,13 @@ fieldset{border:0;padding:0;margin:14px 0}label{margin:0 12px}
 #music{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:48px;height:48px;border-radius:50%;padding:0;font-size:1.3rem}
 .spin{animation:s 4s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
 .pic{width:180px;height:180px;border-radius:50%;object-fit:cover;background:var(--pink);margin:auto;display:block}
-.petal{position:fixed;top:-30px;z-index:5;pointer-events:none;border-radius:150% 0 150% 0;opacity:.75;animation:fall linear infinite}
+.petal{position:fixed;top:-30px;z-index:55;pointer-events:none;border-radius:150% 0 150% 0;opacity:.75;animation:fall linear infinite}
 @keyframes fall{to{transform:translate3d(var(--dx),112vh,0) rotate(540deg)}}
 @media(prefers-reduced-motion:reduce){.petal{display:none}}
 #bg{position:fixed;left:0;right:0;top:-10vh;height:120vh;z-index:-1;pointer-events:none;opacity:.5;background:center/cover no-repeat;will-change:transform}
 #lb{position:fixed;inset:0;z-index:60;background:rgba(40,30,45,.92);display:none;align-items:center;justify-content:center}#lb.on{display:flex}#lb img{max-width:94vw;max-height:84vh;border-radius:12px;object-fit:contain}#lb button{position:absolute;top:50%;width:44px;height:44px;margin:-22px 0 0;padding:0;border-radius:50%;font-size:1.6rem;background:#fff3;color:#fff}
 .big{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;background:var(--blue);cursor:zoom-in}.th{position:relative;display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--rose) transparent;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;cursor:grab;scroll-snap-type:x proximity}.th::-webkit-scrollbar{height:4px}.th::-webkit-scrollbar-thumb{background:var(--rose);border-radius:4px}.th img{scroll-snap-align:center;-webkit-user-drag:none;user-select:none}.th img{width:64px;height:64px;flex:none;object-fit:cover;border-radius:12px;background:var(--blue);opacity:.55;cursor:pointer;transition:.3s}.th .on{opacity:1;outline:2px solid var(--rose)}
+.cbg{position:absolute;inset:0;opacity:.5;background:center/cover no-repeat;pointer-events:none}#cover>:not(.cbg){position:relative}
 </style></head><body>
 <div id="bg"></div>
 <script>
