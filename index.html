@@ -120,6 +120,21 @@ const load=()=>fetch(CONFIG.SCRIPT_URL).then(r=>r.json()).then(render).catch(()=
 $("#wf").onsubmit=async e=>{e.preventDefault();const t=$("#wt").value.trim();if(!t)return;
  if(await send({type:"wish",name:guest,wish:t},$("#wm"),e.target.querySelector("button"))){$("#wt").value="";setTimeout(load,2000)}};
 if(!CONFIG.SCRIPT_URL.startsWith("PASTE"))load();
+ const lb=document.createElement("div");lb.id="lb";
+lb.innerHTML='<img alt=""><button data-d="-1" style="left:8px">‹</button><button data-d="1" style="right:8px">›</button><button style="top:calc(34px + env(safe-area-inset-top,0px));right:14px">✕</button>';
+document.body.append(lb);let L=[],ix=0,x0=0;
+const show=i=>{ix=(i+L.length)%L.length;lb.firstChild.src=L[ix]};
+const openLB=(l,i)=>{L=l;show(i);lb.classList.add("on")};
+lb.onclick=e=>{const b=e.target.closest("button");if(b&&b.dataset.d)show(ix+ +b.dataset.d);else if(e.target.tagName!="IMG")lb.classList.remove("on")};
+lb.addEventListener("touchstart",e=>x0=e.touches[0].clientX,{passive:true});
+lb.addEventListener("touchend",e=>{const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>50)show(ix+(d<0?1:-1))});
+document.addEventListener("keydown",e=>{if(!lb.classList.contains("on"))return;if(e.key=="Escape")lb.classList.remove("on");if(e.key=="ArrowRight")show(ix+1);if(e.key=="ArrowLeft")show(ix-1)});
+let cur=0;const th=$("#th");
+th.innerHTML=CONFIG.GALLERY.map(s=>`<img src="${s}" loading="lazy" alt="">`).join("");
+const sel=(i,scroll)=>{cur=i;$("#big").src=CONFIG.GALLERY[i];[...th.children].forEach((x,j)=>x.classList.toggle("on",j==i));
+ if(scroll){const x=th.children[i];th.scrollTo({left:x.offsetLeft-th.clientWidth/2+x.clientWidth/2,behavior:"smooth"})}};
+th.onclick=e=>{const i=[...th.children].indexOf(e.target);if(i>=0)sel(i,1)};
+$("#big").onclick=()=>openLB(CONFIG.GALLERY,cur);sel(0);
 // parallax background (image at 50% opacity, set in #bg CSS)
 const bg=$("#bg");bg.style.backgroundImage=`url(${CONFIG.BG})`;let tick=0;
 const par=()=>{tick=0;const h=document.documentElement,m=Math.max(1,h.scrollHeight-innerHeight),p=scrollY/m;
