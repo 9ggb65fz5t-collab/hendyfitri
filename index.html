@@ -72,7 +72,7 @@ const evHTML=e=>`<div class="card"><h3>${e.title}</h3><a href="${calLink(e)}" ta
 </section>
 
 <section id="events"><h2>Save The Date</h2><div class="cd" id="cd"></div></section>
-<section><h2>Gallery</h2><div class="grid" id="gal"></div></section>
+<section><h2>Gallery</h2><img class="big" id="big" alt=""><div class="th" id="th"></div></section>
 
 <section><h2>RSVP</h2><form class="card" id="rsvp">
 <input type="text" id="rn" disabled>
@@ -95,7 +95,6 @@ $("#g1").textContent=guest;$("#inv").textContent="Dear "+guest+", with joyful he
 $("#hero").src=CONFIG.HERO;$("#bk").textContent=CONFIG.BANK;$("#ad").textContent=CONFIG.ADDRESS;
 $("#heroDate").href=calLink(CONFIG.EVENTS.reception);
 $("#events").insertAdjacentHTML("beforeend",evHTML(CONFIG.EVENTS.matrimony)+evHTML(CONFIG.EVENTS.reception));
-$("#gal").innerHTML=CONFIG.GALLERY.map(s=>`<img src="${s}" loading="lazy" alt="">`).join("");
 // music
 const aud=$("#aud"),mb=$("#music");aud.src=CONFIG.MUSIC;
 const setM=p=>mb.classList.toggle("spin",p);
@@ -120,7 +119,7 @@ const load=()=>fetch(CONFIG.SCRIPT_URL).then(r=>r.json()).then(render).catch(()=
 $("#wf").onsubmit=async e=>{e.preventDefault();const t=$("#wt").value.trim();if(!t)return;
  if(await send({type:"wish",name:guest,wish:t},$("#wm"),e.target.querySelector("button"))){$("#wt").value="";setTimeout(load,2000)}};
 if(!CONFIG.SCRIPT_URL.startsWith("PASTE"))load();
- const lb=document.createElement("div");lb.id="lb";
+const lb=document.createElement("div");lb.id="lb";
 lb.innerHTML='<img alt=""><button data-d="-1" style="left:8px">‹</button><button data-d="1" style="right:8px">›</button><button style="top:calc(34px + env(safe-area-inset-top,0px));right:14px">✕</button>';
 document.body.append(lb);let L=[],ix=0,x0=0;
 const show=i=>{ix=(i+L.length)%L.length;lb.firstChild.src=L[ix]};
@@ -140,7 +139,7 @@ const bg=$("#bg");bg.style.backgroundImage=`url(${CONFIG.BG})`;let tick=0;
 const par=()=>{tick=0;const h=document.documentElement,m=Math.max(1,h.scrollHeight-innerHeight),p=scrollY/m;
  bg.style.transform=`translate3d(0,${(0.5-p)*0.2*innerHeight}px,0)`};
 addEventListener("scroll",()=>{tick||(tick=requestAnimationFrame(par))},{passive:true});par();
- // falling petals (change PETALS to add/remove)
+// falling petals (change PETALS to add/remove)
 const PETALS=16,cols=["#f9c9d6","#f3a9bf","#fbdde5","#bcd8f0"];
 for(let i=0;i<PETALS;i++){const p=document.createElement("i"),s=10+Math.random()*10;p.className="petal";
  p.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s}px;background:${cols[i%4]};animation-duration:${9+Math.random()*8}s;animation-delay:-${Math.random()*14}s;--dx:${(Math.random()-.5)*160}px`;
