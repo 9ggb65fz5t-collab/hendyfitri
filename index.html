@@ -33,6 +33,7 @@ fieldset{border:0;padding:0;margin:14px 0}label{margin:0 12px}
 .big{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;background:var(--blue);cursor:zoom-in}.th{position:relative;display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--rose) transparent;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;cursor:grab;scroll-snap-type:x proximity}.th::-webkit-scrollbar{height:4px}.th::-webkit-scrollbar-thumb{background:var(--rose);border-radius:4px}.th img{scroll-snap-align:center;-webkit-user-drag:none;user-select:none}.th img{width:64px;height:64px;flex:none;object-fit:cover;border-radius:12px;background:var(--blue);opacity:.55;cursor:pointer;transition:.3s}.th .on{opacity:1;outline:2px solid var(--rose)}
 .cbg{position:absolute;inset:0;opacity:.5;background:center/cover no-repeat;pointer-events:none}#cover>:not(.cbg){position:relative}
 .pg{margin-top:12px}.pg button{padding:6px 16px;margin:0 8px}.pg button:disabled{opacity:.4;cursor:default}.wish div{white-space:pre-wrap;word-break:break-word}
+footer{padding:8px 22px calc(40px + env(safe-area-inset-bottom,0px));font-size:.8rem;letter-spacing:.06em;opacity:.7}
 </style></head><body>
 <div id="bg"></div>
 <script>
@@ -92,6 +93,7 @@ const evHTML=e=>`<div class="card"><h3>${e.title}</h3><a href="${calLink(e)}" ta
  <p><h2>Thank You</h2></p>
  <p>Thank you for being part of our story and celebrating the start of our forever</p>
 With love,<br><b>Hendy &amp; Fitri</b></section>
+ <footer>Created by @shipShopp.id</footer>
 
 <script>
 $("#g1").textContent=guest;$("#inv").textContent="Dear "+guest+", with joyful hearts we invite you to share the beginning of our forever.";$("#rn").value=guest;$("#wn").value=guest;
