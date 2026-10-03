@@ -100,7 +100,8 @@ $("#events").insertAdjacentHTML("beforeend",evHTML(CONFIG.EVENTS.matrimony)+evHT
 const aud=$("#aud"),mb=$("#music");aud.src=CONFIG.MUSIC;
 const setM=p=>mb.classList.toggle("spin",p);
 mb.onclick=()=>aud.paused?aud.play().then(()=>setM(1)).catch(()=>{}):(aud.pause(),setM(0));
-$("#open").onclick=()=>{$("#cover").classList.add("hide");aud.play().then(()=>setM(1)).catch(()=>{})};
+history.scrollRestoration="manual";scrollTo(0,0);document.body.style.overflow="hidden"; // locked until opened
+$("#open").onclick=()=>{document.body.style.overflow="";scrollTo(0,0);$("#cover").classList.add("hide");aud.play().then(()=>setM(1)).catch(()=>{})};
 // countdown (WIB, UTC+7)
 const T=new Date("2026-12-06T18:00:00+07:00");
 setInterval(()=>{let d=Math.max(0,T-new Date()),u=[["Days",864e5],["Hours",36e5],["Min",6e4],["Sec",1e3]];
@@ -140,7 +141,7 @@ addEventListener("pointerup",()=>dn=0);
 th.onclick=e=>{if(mv){mv=0;return}const i=[...th.children].indexOf(e.target);if(i>=0)sel(i,1)};
 $("#big").onclick=()=>openLB(CONFIG.GALLERY,cur);sel(0);
 // parallax background (image at 50% opacity, set in #bg CSS)
-const bg=$("#bg");bg.style.backgroundImage=`url(${CONFIG.BG})`;let tick=0;
+const bg=$("#bg");bg.style.backgroundImage=`url(${CONFIG.BG})`;$(".cbg").style.backgroundImage=`url(${CONFIG.BG})`;let tick=0;
 const par=()=>{tick=0;const h=document.documentElement,m=Math.max(1,h.scrollHeight-innerHeight),p=scrollY/m;
  bg.style.transform=`translate3d(0,${(0.5-p)*0.2*innerHeight}px,0)`};
 addEventListener("scroll",()=>{tick||(tick=requestAnimationFrame(par))},{passive:true});par();
